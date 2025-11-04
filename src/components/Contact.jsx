@@ -72,21 +72,21 @@ const Contact = () => {
             </button>
           </div>
           <div className="flex justify-center gap-4 mt-6 sm:mt-8">
-            <a href="https://github.com/Thamalu7501/" className="w-12 h-12 bg-purple-600 text-white rounded-full flex items-center justify-center hover:bg-purple-700 transition-all transform hover:scale-110">
+            <a href="https://github.com/Thamalu7501" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-purple-600 text-white rounded-full flex items-center justify-center hover:bg-purple-700 transition-all transform hover:scale-110">
               <Github size={20} />
             </a>
-            <a href="https://www.linkedin.com/in/thamalu-amarasingha/" className="w-12 h-12 bg-purple-600 text-white rounded-full flex items-center justify-center hover:bg-purple-700 transition-all transform hover:scale-110">
+            <a href="https://www.linkedin.com/in/thamalu-amarasingha/" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-purple-600 text-white rounded-full flex items-center justify-center hover:bg-purple-700 transition-all transform hover:scale-110">
               <Linkedin size={20} />
             </a>
-            <a href="https://www.facebook.com/thamalu.amarasingha.7/" className="w-12 h-12 bg-purple-600 text-white rounded-full flex items-center justify-center hover:bg-purple-700 transition-all transform hover:scale-110">
+            <a href="https://www.facebook.com/thamalu.amarasingha.7/" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-purple-600 text-white rounded-full flex items-center justify-center hover:bg-purple-700 transition-all transform hover:scale-110">
               <Facebook size={20} />
             </a>
 
-            <a href="https://www.instagram.com/thamalu_amarasingha/" className="w-12 h-12 bg-purple-600 text-white rounded-full flex items-center justify-center hover:bg-purple-700 transition-all transform hover:scale-110">
+            <a href="https://www.instagram.com/thamalu_amarasingha/" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-purple-600 text-white rounded-full flex items-center justify-center hover:bg-purple-700 transition-all transform hover:scale-110">
               <Instagram size={20} />
             </a>
-          
-            <a href="#" className="w-12 h-12 bg-purple-600 text-white rounded-full flex items-center justify-center hover:bg-purple-700 transition-all transform hover:scale-110">
+
+            <a href="https://twitter.com/thamalu_amarasingha" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-purple-600 text-white rounded-full flex items-center justify-center hover:bg-purple-700 transition-all transform hover:scale-110">
               <Twitter size={20} />
             </a>
           </div>
