@@ -1,310 +1,91 @@
-import React, { useState, useRef, useEffect } from "react";
-import { ExternalLink, Github, X } from "lucide-react";
-
-const projects = [
-  {
-    title: "LCCG Website",
-    subtitle: "Leo Club of Cinnamon Gardens Colombo",
-    category: "Web Development",
-    desc: "Developed a dynamic and responsive website for the Leo Club of Cinnamon Gardens Colombo (LCCG) using the MERN stack. The platform showcases the club's activities, events, and community services while enabling members and visitors to engage with the club more effectively.",
-    tech: "MERN Stack (MongoDB, Express.js, React.js, Node.js)",
-    status: "Deployed",
-    frontend: "https://github.com/KavindaAppuhamy/Project-LCCG-Frontend",
-    backend: "https://github.com/KavindaAppuhamy/Project-LCCG-Backend",
-    demo: "https://cinnamonleos.org",
-    gradient: "from-green-500 to-emerald-400",
-    image: "/Projects/LCCG.png"
-  },
-  {
-    title: "Crystal Beauty Clear",
-    subtitle: "E-Commerce Website",
-    category: "Web Development",
-    desc: "Crystal Beauty Clear is a full-featured e-commerce platform developed using the MERN stack, designed to provide a seamless shopping experience. The platform consists of two separate sites: a user-facing store where customers can browse products, add items to their cart, and place orders, and an admin dashboard that allows administrators to manage products, inventory, and orders efficiently. With its modern design, responsive UI, and robust backend, Crystal Beauty Clear showcases both frontend and backend development skills while highlighting strong problem-solving and system design capabilities.",
-    tech: "MERN Stack (MongoDB, Express, React, Node.js)",
-    status: "Developing",
-    frontend: "https://github.com/KavindaAppuhamy/cbc-frontend",
-    backend: "https://github.com/KavindaAppuhamy/cbc-backend",
-    demo: "",
-    gradient: "from-pink-400 to-purple-500",
-    image: "/Projects/CBC.png"
-  },
-  {
-    title: "DoMedia Job Assessment",
-    subtitle: "Assessment Project for DoMedia Internship",
-    category: "Web Development",
-    desc: "Developed and deployed a Job Assessment project for DoMedia, demonstrating expertise in creating a fully responsive and visually engaging landing page. Built entirely with HTML, CSS, and JavaScript, the project highlights my ability to design and implement a clean, user-friendly frontend interface while ensuring seamless responsiveness across devices.",
-    tech: "Frontend: HTML, CSS, JavaScript",
-    status: "Deployed",
-    frontend: "https://github.com/KavindaAppuhamy/Domedia-Assessment",
-    demo: "https://kavindaappuhamy.github.io/Domedia-Assessment/",
-    gradient: "from-indigo-500 to-purple-500",
-    image: "/Projects/DoMedia.png"
-  },
-  {
-    title: "Pic N Charge",
-    subtitle: "Electric Vehicle Charging Stations Finder App for Sri Lanka",
-    category: "Mobile App",
-    desc: "The automotive industry globally is rapidly transforming, led by the evolution of Electric Vehicle (EV) technology. Countries like Sri Lanka are actively embracing this change, driving a surge in the demand for accessible EV charging infrastructure. To aid this transition, we're creating a mobile app to easily locate and access Electric Vehicle charging stations across Sri Lanka, facilitating the widespread adoption of EVs as a sustainable mode of transportation.",
-    tech: "Kotlin, Firebase",
-    status: "Done",
-    frontend: "https://github.com/KavindaAppuhamy/PicNCharge",
-    demo: "",
-    gradient: "from-cyan-400 to-blue-500",
-    image: "/Projects/PicnCharge.png"
-  },
-  {
-    title: "Pharmacy System",
-    subtitle: "Pharmacy Store Management System",
-    category: "Desktop App",
-    desc: "During my first year of pursuing my degree, I developed a Pharmacy Store Management System, marking a significant step in my journey into software development. This project allowed me to gain hands-on experience in building real-world applications, designing an efficient system for managing pharmacy operations. I utilized C# to create a user-friendly front end in Visual Studio, while Microsoft SQL Server powered the back end, enabling seamless data management and storage. Through this project, I honed my skills in full-stack development, database integration, and practical problem-solving within a professional software environment.",
-    tech: ".NET Development",
-    status: "Done",
-    frontend: "https://github.com/KavindaAppuhamy/Hospital_Medicine_Management_System",
-    demo: "",
-    gradient: "from-blue-500 to-cyan-500",
-    image: "/Projects/Atom.png"
-  },
-  {
-    title: "NPI SPACE",
-    subtitle: "Engineering Change Management System",
-    category: "Enterprise",
-    desc: "During my first-year studies, I had the privilege of collaborating with a talented group of peers on an innovative project known as NPI SPACE. This endeavor served as our final project, representing the culmination of our foundational knowledge in software development. In this Project, NetBeans and mysql used to créate this system. Its front end was developed using JAVA programming language, while the back end was powered by SQL.",
-    tech: "Enterprise App Development",
-    status: "Done",
-    frontend: "https://github.com/KavindaAppuhamy/NPISpace_ECN_Change_Management_System",
-    demo: "",
-    gradient: "from-blue-500 to-cyan-500",
-    image: "/Projects/NPI_SPACE.png"
-  },
-  {
-    title: "Restaurant API",
-    subtitle: "Restaurant Management Web App",
-    category: "Web Development",
-    desc: "A restaurant management application was created with new menu-adding and delivery tracking features. To manage various CRUD activities from multiple databases, this project used a microservices architecture with three different microservices. Java and Spring Boot were used in the back-end development to build dependable RESTful APIs for the microservices. Additionally, React was used for the frontend, with the Node.js environment's Axios package for effective processing of HTTP requests.",
-    tech: "Microservices Based (SpringBoot, Express, React, Node.js)",
-    status: "Done",
-    frontend: "https://github.com/KavindaAppuhamy/REST_API_Microservices/tree/master/frontend-react",
-    backend: "https://github.com/KavindaAppuhamy/REST_API_Microservices/tree/master/backend-microservices-rest-api",
-    demo: "",
-    gradient: "from-blue-500 to-cyan-500",
-    image: "/Projects/REST-API.png"
-  },
-];
-
-const categories = ["All", "Enterprise", "Web Development", "Desktop App", "Mobile App"];
-
-// Custom hook for intersection observer
-const useIntersectionObserver = (options = {}) => {
-  const [isVisible, setIsVisible] = useState(false);
-  const [hasAnimated, setHasAnimated] = useState(false);
-  const ref = useRef();
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting && !hasAnimated) {
-        setIsVisible(true);
-        setHasAnimated(true);
-      }
-    }, {
-      threshold: 0.1,
-      rootMargin: '-50px 0px',
-      ...options
-    });
-
-    const currentRef = ref.current;
-    if (currentRef) {
-      observer.observe(currentRef);
-    }
-
-    return () => {
-      if (currentRef) {
-        observer.unobserve(currentRef);
-      }
-    };
-  }, [hasAnimated, options]);
-
-  return [ref, isVisible];
-};
-
-// Animated wrapper component for individual items
-const AnimatedItem = ({ children, delay = 0, className = "" }) => {
-  const [ref, isVisible] = useIntersectionObserver();
-
-  return (
-    <div
-      ref={ref}
-      className={`${className} transition-all duration-700 ease-out ${
-        isVisible 
-          ? 'opacity-100 translate-y-0' 
-          : 'opacity-0 translate-y-8'
-      }`}
-      style={{
-        transitionDelay: isVisible ? `${delay}ms` : '0ms'
-      }}
-    >
-      {children}
-    </div>
-  );
-};
-
-// Project Detail Modal Component
-const ProjectModal = ({ project, isOpen, onClose }) => {
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
-  }, [isOpen]);
-
-  if (!isOpen) return null;
-
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
-      {/* Backdrop with blur */}
-      <div 
-        className="absolute inset-0 bg-black/50 backdrop-blur-md"
-        onClick={onClose}
-      ></div>
-      
-      {/* Modal Content */}
-      <div className="relative bg-slate-800 rounded-2xl max-w-4xl mx-4 max-h-[90vh] overflow-y-auto border border-slate-600/50 shadow-2xl">
-        {/* Close Button */}
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 z-10 p-2 bg-slate-700 hover:bg-slate-600 text-gray-300 hover:text-white rounded-full transition-colors duration-300"
-        >
-          <X size={20} />
-        </button>
-
-        {/* Modal Header with Image */}
-        <div className="relative">
-          <div className="aspect-[2/1] overflow-hidden rounded-t-2xl">
-            {project.image ? (
-              <img
-                src={project.image}
-                alt={project.title}
-                className="w-full h-full object-cover"
-              />
-            ) : (
-              <div className={`w-full h-full bg-gradient-to-br ${project.gradient} flex items-center justify-center`}>
-                <span className="text-2xl font-bold text-white">{project.title}</span>
-              </div>
-            )}
-          </div>
-          
-          {/* Overlay badges */}
-          <div className="absolute top-4 left-4 flex gap-2">
-            <span className="bg-slate-900/80 backdrop-blur-sm text-cyan-400 px-3 py-1.5 rounded-full text-sm font-medium">
-              {project.category}
-            </span>
-            {project.status && (
-              <span
-                className={`px-3 py-1.5 rounded-full text-sm font-semibold backdrop-blur-sm ${
-                  project.status === "Deployed"
-                    ? "bg-green-500/80 text-white"
-                    : project.status === "Developing"
-                    ? "bg-yellow-400/80 text-slate-900"
-                    : project.status === "Maintaining"
-                    ? "bg-blue-500/80 text-white"
-                    : "bg-gray-500/80 text-white"
-                }`}
-              >
-                {project.status}
-              </span>
-            )}
-          </div>
-        </div>
-
-        {/* Modal Body */}
-        <div className="p-8">
-          {/* Title Section */}
-          <div className="mb-6">
-            <h2 className="text-3xl font-bold text-white mb-2">{project.title}</h2>
-            <p className="text-xl text-gray-300">{project.subtitle}</p>
-          </div>
-
-          {/* Tech Stack */}
-          <div className="mb-6">
-            <h3 className="text-lg font-semibold text-cyan-400 mb-2">Technology Stack</h3>
-            <div className="flex flex-wrap gap-2">
-              {project.tech.split(',').map((tech, i) => (
-                <span 
-                  key={i}
-                  className="px-3 py-1.5 bg-slate-700 text-cyan-400 rounded-lg text-sm font-medium"
-                >
-                  {tech.trim()}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          {/* Description */}
-          <div className="mb-8">
-            <h3 className="text-lg font-semibold text-cyan-400 mb-3">Project Description</h3>
-            <p className="text-gray-300 leading-relaxed text-base">
-              {project.desc}
-            </p>
-          </div>
-
-          {/* Action Buttons */}
-          <div className="flex flex-wrap gap-4">
-            {project.frontend && (
-              <a
-                href={project.frontend}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 px-6 py-3 bg-slate-700 hover:bg-slate-600 text-white rounded-lg font-medium transition-all duration-300 hover:scale-105"
-              >
-                <Github size={20} />
-                <span>Frontend Code</span>
-              </a>
-            )}
-
-            {project.backend && (
-              <a
-                href={project.backend}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 px-6 py-3 bg-slate-700 hover:bg-slate-600 text-white rounded-lg font-medium transition-all duration-300 hover:scale-105"
-              >
-                <Github size={20} />
-                <span>Backend Code</span>
-              </a>
-            )}
-
-            {project.demo && (
-              <a
-                href={project.demo}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-white rounded-lg font-medium transition-all duration-300 hover:scale-105 shadow-lg"
-              >
-                <ExternalLink size={20} />
-                <span>Live Demo</span>
-              </a>
-            )}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
+import React, { useState } from 'react';
+import { Github, ExternalLink } from 'lucide-react';
+import ProjectModal from './ProjectModal';
 
 const Projects = () => {
   const [activeCategory, setActiveCategory] = useState("All");
   const [selectedProject, setSelectedProject] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [scrollLeft, setScrollLeft] = useState(0);
-  const categoriesRef = useRef(null);
 
-  const filteredProjects = activeCategory === "All" 
+  const projects = [
+    {
+      title: 'E-Commerce Platform',
+      subtitle: 'Full-Stack Online Shopping Solution',
+      category: 'Web Development',
+      description: 'Full-stack e-commerce solution with payment integration and real-time inventory management. Features include user authentication, product catalog, shopping cart, and secure checkout process.',
+      tech: ['React', 'Node.js', 'MongoDB', 'Stripe'],
+      status: 'Deployed',
+      gradient: 'from-purple-400 to-pink-500',
+      frontend: 'https://github.com/yourusername/ecommerce-frontend',
+      backend: 'https://github.com/yourusername/ecommerce-backend',
+      demo: 'https://demo-ecommerce.com',
+      image: null
+    },
+    {
+      title: 'Task Management App',
+      subtitle: 'Collaborative Project Manager',
+      category: 'Web Development',
+      description: 'Collaborative task manager with real-time updates, team chat, and progress tracking. Built with modern tech stack for seamless team collaboration.',
+      tech: ['React', 'Firebase', 'Tailwind CSS'],
+      status: 'Developing',
+      gradient: 'from-blue-400 to-cyan-500',
+      frontend: 'https://github.com/yourusername/task-manager',
+      demo: 'https://demo-taskmanager.com',
+      image: null
+    },
+    {
+      title: 'Weather Dashboard',
+      subtitle: 'Real-Time Weather Analytics',
+      category: 'Web Development',
+      description: 'Interactive weather forecast with data visualization, maps, and 7-day predictions. Features location-based weather data and beautiful UI.',
+      tech: ['React', 'API Integration', 'Chart.js'],
+      status: 'Done',
+      gradient: 'from-green-400 to-teal-500',
+      frontend: 'https://github.com/yourusername/weather-dashboard',
+      demo: 'https://demo-weather.com',
+      image: null
+    },
+    {
+      title: 'Mobile Banking App',
+      subtitle: 'Secure Financial Management',
+      category: 'Mobile App',
+      description: 'A secure mobile banking application with account management, transaction history, and bill payments. Built with React Native for cross-platform compatibility.',
+      tech: ['React Native', 'Node.js', 'PostgreSQL'],
+      status: 'Done',
+      gradient: 'from-indigo-400 to-purple-500',
+      frontend: 'https://github.com/yourusername/banking-app',
+      backend: 'https://github.com/yourusername/banking-backend',
+      image: null
+    },
+    {
+      title: 'Inventory System',
+      subtitle: 'Desktop Management Solution',
+      category: 'Desktop App',
+      description: 'A comprehensive inventory management system for retail stores. Features include stock tracking, sales reports, and supplier management.',
+      tech: ['Electron', 'React', 'SQLite'],
+      status: 'Done',
+      gradient: 'from-orange-400 to-red-500',
+      frontend: 'https://github.com/yourusername/inventory-system',
+      image: null
+    },
+    {
+      title: 'CRM Platform',
+      subtitle: 'Enterprise Customer Management',
+      category: 'Enterprise',
+      description: 'Enterprise-level CRM platform with sales pipeline management, customer analytics, and automated email campaigns. Scalable architecture for large organizations.',
+      tech: ['React', 'Spring Boot', 'MySQL', 'Redis'],
+      status: 'Deployed',
+      gradient: 'from-cyan-400 to-blue-500',
+      frontend: 'https://github.com/yourusername/crm-platform',
+      backend: 'https://github.com/yourusername/crm-backend',
+      demo: 'https://demo-crm.com',
+      image: null
+    },
+  ];
+
+  const categories = ['All', 'Web Development', 'Mobile App', 'Desktop App', 'Enterprise'];
+
+  const filteredProjects = activeCategory === 'All' 
     ? projects 
     : projects.filter(project => project.category === activeCategory);
 
@@ -318,137 +99,58 @@ const Projects = () => {
     setSelectedProject(null);
   };
 
-  // Handle touch events for horizontal swipe
-  const handleTouchStart = (e) => {
-    setIsDragging(true);
-    setStartX(e.touches[0].pageX - categoriesRef.current.offsetLeft);
-    setScrollLeft(categoriesRef.current.scrollLeft);
-  };
-
-  const handleTouchMove = (e) => {
-    if (!isDragging) return;
-    e.preventDefault();
-    const x = e.touches[0].pageX - categoriesRef.current.offsetLeft;
-    const walk = (x - startX) * 2;
-    categoriesRef.current.scrollLeft = scrollLeft - walk;
-  };
-
-  const handleTouchEnd = () => {
-    setIsDragging(false);
-  };
-
-  // Handle mouse events for horizontal swipe (for testing on desktop)
-  const handleMouseDown = (e) => {
-    setIsDragging(true);
-    setStartX(e.pageX - categoriesRef.current.offsetLeft);
-    setScrollLeft(categoriesRef.current.scrollLeft);
-  };
-
-  const handleMouseMove = (e) => {
-    if (!isDragging) return;
-    const x = e.pageX - categoriesRef.current.offsetLeft;
-    const walk = (x - startX) * 2;
-    categoriesRef.current.scrollLeft = scrollLeft - walk;
-  };
-
-  const handleMouseUp = () => {
-    setIsDragging(false);
-  };
-
-  const handleMouseLeave = () => {
-    setIsDragging(false);
-  };
-
   return (
-    <section id="projects" className="min-h-screen bg-slate-800 px-4 md:px-16 py-24">
-      <div className="container mx-auto max-w-7xl">
-        {/* Header */}
-        <AnimatedItem className="text-center mb-8 sm:mb-10 relative">
-          <div className="relative mb-12 sm:mb-15">
-            <h1 className="text-7xl sm:text-8xl md:text-9xl font-bold text-slate-700 opacity-30 select-none">
-              GALLERY
-            </h1>
-            <h2 className="absolute inset-0 flex items-center justify-center text-xl sm:text-2xl md:text-4xl font-bold">
-              MY <span className="text-cyan-400 ml-3">PORTFOLIO</span>
-            </h2>
-          </div>
-        </AnimatedItem>
-          
-        {/* Category Filters - Horizontal Scrollable */}
-        <AnimatedItem delay={200} className="mb-4 sm:mb-6">
-          <div
-            ref={categoriesRef}
-            className="flex gap-2 xs:gap-3 sm:gap-4 pb-2 overflow-x-auto hide-scrollbar touch-pan-x
-                      md:justify-center md:overflow-x-visible"
-            style={{
-              scrollbarWidth: "none",
-              msOverflowStyle: "none",
-              WebkitOverflowScrolling: "touch",
-              cursor: isDragging ? "grabbing" : "grab",
-            }}
-            onTouchStart={handleTouchStart}
-            onTouchMove={handleTouchMove}
-            onTouchEnd={handleTouchEnd}
-            onMouseDown={handleMouseDown}
-            onMouseMove={handleMouseMove}
-            onMouseUp={handleMouseUp}
-            onMouseLeave={handleMouseLeave}
-          >
-            <div className="flex gap-2 xs:gap-3 sm:gap-4 min-w-max px-1 md:min-w-0">
-              {categories.map((category, index) => (
-                <button
-                  key={category}
-                  onClick={() => setActiveCategory(category)}
-                  className={`flex-shrink-0 px-3 xs:px-4 sm:px-5 md:px-6 py-2 xs:py-2.5 sm:py-3 rounded-full font-semibold transition-all duration-300 border-2 text-xs xs:text-sm sm:text-base whitespace-nowrap transform hover:scale-105 ${
-                    activeCategory === category
-                      ? "bg-cyan-400 text-slate-900 border-cyan-400 shadow-lg"
-                      : "bg-transparent text-gray-300 border-slate-600 hover:border-cyan-400 hover:text-cyan-400"
-                  }`}
-                  style={{
-                    animationDelay: `${index * 100}ms`
-                  }}
-                >
-                  {category}
-                </button>
-              ))}
-            </div>
-          </div>
-        </AnimatedItem>
+    <section id="projects" className="py-12 sm:py-16 md:py-20 bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-8 sm:mb-12">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800 mb-2">
+            My <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600">Portfolio</span>
+          </h2>
+          <p className="text-gray-600">Check out my latest projects</p>
+        </div>
 
-        {/* Projects Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filteredProjects.map((project, index) => (
-            <AnimatedItem 
-              key={`${project.title}-${activeCategory}`} 
-              delay={index * 100}
-              className="group bg-slate-700/50 backdrop-blur-sm rounded-xl overflow-hidden hover:shadow-lg hover:shadow-cyan-400/20 transition-all duration-500 hover:-translate-y-1 border border-slate-600/30 flex flex-col h-full"
+        <div className="flex gap-2 sm:gap-3 mb-8 overflow-x-auto pb-2 justify-center">
+          {categories.map((category) => (
+            <button
+              key={category}
+              onClick={() => setActiveCategory(category)}
+              className={`flex-shrink-0 px-4 sm:px-6 py-2 sm:py-2.5 rounded-full font-semibold transition-all duration-300 text-xs sm:text-sm whitespace-nowrap ${
+                activeCategory === category
+                  ? "bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg transform scale-105"
+                  : "bg-white text-gray-700 hover:bg-gray-100"
+              }`}
             >
-              {/* Project Image */}
-              <div className="aspect-[3/2] relative overflow-hidden bg-gradient-to-br from-slate-600 to-slate-700">
+              {category}
+            </button>
+          ))}
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+          {filteredProjects.map((project, index) => (
+            <div
+              key={index}
+              className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300"
+            >
+              <div className="aspect-[3/2] relative overflow-hidden">
                 {project.image ? (
                   <img
                     src={project.image}
                     alt={project.title}
-                    className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+                    className="w-full h-full object-cover transform hover:scale-110 transition-transform duration-500"
                   />
                 ) : (
-                  <div className={`w-full h-full bg-gradient-to-br ${project.gradient} flex items-center justify-center`}>
-                    <span className="text-lg font-bold text-white">{project.title}</span>
-                  </div>
+                  <div className={`w-full h-full bg-gradient-to-br ${project.gradient}`}></div>
                 )}
                 
-                {/* Status Badge */}
                 {project.status && (
                   <div className="absolute top-3 right-3">
                     <span
-                      className={`px-2 py-1 rounded-full text-xs font-semibold backdrop-blur-sm ${
+                      className={`px-2.5 py-1 rounded-full text-xs font-semibold backdrop-blur-sm ${
                         project.status === "Deployed"
-                          ? "bg-green-500/80 text-white"
+                          ? "bg-green-500/90 text-white"
                           : project.status === "Developing"
-                          ? "bg-yellow-400/80 text-slate-900"
-                          : project.status === "Maintaining"
-                          ? "bg-blue-500/80 text-white"
-                          : "bg-gray-500/80 text-white"
+                          ? "bg-yellow-400/90 text-gray-900"
+                          : "bg-blue-500/90 text-white"
                       }`}
                     >
                       {project.status}
@@ -456,143 +158,94 @@ const Projects = () => {
                   </div>
                 )}
 
-                {/* Category Badge */}
                 <div className="absolute top-3 left-3">
-                  <span className="bg-slate-900/80 backdrop-blur-sm text-cyan-400 px-2 py-1 rounded-full text-xs font-medium">
+                  <span className="bg-white/90 backdrop-blur-sm text-purple-600 px-2.5 py-1 rounded-full text-xs font-medium">
                     {project.category}
                   </span>
                 </div>
               </div>
               
-              {/* Content Section */}
-              <div className="p-4 flex flex-col flex-1">
-                {/* Title and Subtitle */}
-                <div className="mb-3">
-                  <h3 className="text-lg font-bold text-white mb-1">
-                    {project.title}
-                  </h3>
-                  <p className="text-gray-400 text-sm">
-                    {project.subtitle}
-                  </p>
+              <div className="p-5 sm:p-6">
+                <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-2">
+                  {project.title}
+                </h3>
+                <p className="text-gray-600 text-sm mb-3">
+                  {project.subtitle}
+                </p>
+
+                <p className="text-gray-500 text-sm line-clamp-2 mb-3">
+                  {project.description}
+                </p>
+                <button
+                  onClick={() => openModal(project)}
+                  className="text-purple-600 hover:text-purple-700 text-sm font-medium mb-4"
+                >
+                  Read more...
+                </button>
+
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {project.tech.slice(0, 3).map((tech, i) => (
+                    <span 
+                      key={i}
+                      className="px-2 py-1 bg-purple-100 text-purple-700 rounded-md text-xs font-medium"
+                    >
+                      {tech}
+                    </span>
+                  ))}
                 </div>
 
-                {/* Description - Truncated with Read More */}
-                <div className="mb-3 flex-1">
-                  <p className="text-gray-300 text-sm line-clamp-2 mb-2">
-                    {project.desc}
-                  </p>
-                  <button
-                    onClick={() => openModal(project)}
-                    className="text-cyan-400 hover:text-cyan-300 text-sm font-medium transition-colors duration-300"
-                  >
-                    Read more...
-                  </button>
-                </div>
-
-                {/* Tech Stack */}
-                <div className="text-xs text-cyan-400 font-medium mb-4">
-                  {project.tech}
-                </div>
-
-                {/* Action Buttons - Always at bottom */}
-                <div className="flex items-center gap-2 mt-auto">
-                  {/* Frontend/Source Code Button */}
-                  {project.frontend ? (
+                <div className="flex gap-2">
+                  {project.frontend && (
                     <a
                       href={project.frontend}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-1 px-3 py-2 bg-slate-600 hover:bg-slate-500 text-white rounded-lg text-xs font-medium transition-all duration-300 hover:scale-105"
-                      title="View Frontend Code"
+                      className="flex items-center gap-1 px-3 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-lg text-xs font-medium transition-all"
                     >
                       <Github size={14} />
-                      <span>Frontend</span>
+                      <span>Code</span>
                     </a>
-                  ) : (
-                    <div className="flex items-center gap-1 px-3 py-2 bg-slate-700 text-gray-500 rounded-lg text-xs font-medium cursor-not-allowed">
-                      <Github size={14} />
-                      <span>Frontend</span>
-                    </div>
                   )}
 
-                  {/* Backend Button */}
-                  {project.backend ? (
-                    <a
-                      href={project.backend}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-1 px-3 py-2 bg-slate-600 hover:bg-slate-500 text-white rounded-lg text-xs font-medium transition-all duration-300 hover:scale-105"
-                      title="View Backend Code"
-                    >
-                      <Github size={14} />
-                      <span>Backend</span>
-                    </a>
-                  ) : (
-                    <div className="flex items-center gap-1 px-3 py-2 bg-slate-700 text-gray-500 rounded-lg text-xs font-medium cursor-not-allowed">
-                      <Github size={14} />
-                      <span>Backend</span>
-                    </div>
-                  )}
-
-                  {/* Live Demo Button */}
-                  {project.demo ? (
+                  {project.demo && (
                     <a
                       href={project.demo}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-1 px-3 py-2 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-white rounded-lg text-xs font-medium transition-all duration-300 hover:scale-105 shadow-md"
-                      title="View Live Demo"
+                      className="flex items-center gap-1 px-3 py-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white rounded-lg text-xs font-medium transition-all"
                     >
                       <ExternalLink size={14} />
                       <span>Demo</span>
                     </a>
-                  ) : (
-                    <div className="flex items-center gap-1 px-3 py-2 bg-slate-700 text-gray-500 rounded-lg text-xs font-medium cursor-not-allowed">
-                      <ExternalLink size={14} />
-                      <span>Demo</span>
-                    </div>
                   )}
                 </div>
               </div>
-            </AnimatedItem>
+            </div>
           ))}
         </div>
 
-        {/* Bottom CTA */}
-        <AnimatedItem delay={400} className="text-center mt-16">
-          <p className="text-gray-400 text-lg mb-6">
+        <div className="text-center mt-12 sm:mt-16">
+          <p className="text-gray-600 text-base sm:text-lg mb-6">
             Want to see more of my work?
           </p>
           <a
-            href="https://github.com/KavindaAppuhamy"
+            href="https://github.com/yourusername"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-500 text-white rounded-full font-semibold hover:shadow-lg hover:shadow-cyan-400/50 transition-all duration-300 hover:-translate-y-1 transform hover:scale-105"
+            className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-full font-semibold hover:shadow-lg transition-all hover:-translate-y-1 transform hover:scale-105"
           >
             <Github size={20} />
             <span>Visit My GitHub</span>
             <ExternalLink size={18} />
           </a>
-        </AnimatedItem>
+        </div>
       </div>
 
-      {/* Project Detail Modal */}
       <ProjectModal 
         project={selectedProject}
         isOpen={isModalOpen}
         onClose={closeModal}
       />
-
-      {/* Custom CSS for hiding scrollbar */}
-      <style jsx="true">{`
-        .hide-scrollbar {
-          -ms-overflow-style: none;  /* IE and Edge */
-          scrollbar-width: none;  /* Firefox */
-        }
-        .hide-scrollbar::-webkit-scrollbar {
-          display: none;  /* Chrome, Safari and Opera */
-        }
-      `}</style>
     </section>
   );
 };
